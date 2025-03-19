@@ -1,2 +1,4 @@
-package com.example.calendar.repository;public interface CalendarRepository {
+package com.example.calendar.repository;
+
+public interface CalendarRepository {
 }
