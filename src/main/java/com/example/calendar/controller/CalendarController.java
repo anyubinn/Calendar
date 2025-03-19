@@ -14,7 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CalendarController {
 
-    private CalendarService calendarService;
+    private final CalendarService calendarService;
+
+    public CalendarController(CalendarService calendarService) {
+        this.calendarService = calendarService;
+    }
 
     @PostMapping
     public ResponseEntity<CalendarResponseDto> createSchedule(@RequestBody CalendarRequestDto dto) {
