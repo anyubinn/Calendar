@@ -7,5 +7,5 @@ public class CalendarRequestDto {
 
     private String todo;
     private String writerName;
-    private Long password;
+    private String password;
 }

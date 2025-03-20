@@ -9,3 +9,5 @@ CREATE TABLE calendar
     reg_date TIMESTAMP,
     mod_date TIMESTAMP
 );
+
+ALTER TABLE calendar MODIFY COLUMN password VARCHAR(50) NOT NULL;
