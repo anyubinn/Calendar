@@ -1,6 +1,6 @@
 ## 일정 관리 앱 과제
 ### 🚀 API 명세서
-<img width="1296" alt="Image" src="https://github.com/user-attachments/assets/7bbc0a14-134a-4c37-8b8c-cee11cecfa69" />
+<img width="1289" alt="Image" src="https://github.com/user-attachments/assets/25d40fce-dd78-433c-872f-e860b6bd797c" />
 
 ### 🚀 ERD
-<img width="256" alt="Image" src="https://github.com/user-attachments/assets/2247beef-3a07-4fac-8c59-b2fc9182274e" />
+<img width="255" alt="Image" src="https://github.com/user-attachments/assets/2b363276-dcb1-41b6-9fea-18652682ab40" />
