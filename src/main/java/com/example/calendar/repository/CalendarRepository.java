@@ -9,4 +9,6 @@ public interface CalendarRepository {
     CalendarResponseDto saveSchedule(Calendar calendar);
 
     List<CalendarResponseDto> findAllSchedules();
+
+    CalendarResponseDto findScheduleById(Long id);
 }

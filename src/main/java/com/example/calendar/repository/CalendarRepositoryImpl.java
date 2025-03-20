@@ -4,8 +4,6 @@ import com.example.calendar.dto.CalendarResponseDto;
 import com.example.calendar.entity.Calendar;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +45,12 @@ public class CalendarRepositoryImpl implements CalendarRepository {
     public List<CalendarResponseDto> findAllSchedules() {
 
         return jdbcTemplate.query("select * from calendar order by mod_date desc", calendarRowMapper());
+    }
+
+    @Override
+    public CalendarResponseDto findScheduleById(Long id) {
+
+        return jdbcTemplate.queryForObject("select * from calendar where id = ?", calendarRowMapper(), id);
     }
 
     private RowMapper<CalendarResponseDto> calendarRowMapper() {

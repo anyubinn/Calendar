@@ -9,4 +9,6 @@ public interface CalendarService {
     CalendarResponseDto createSchedule(CalendarRequestDto dto);
 
     List<CalendarResponseDto> findAllSchedules();
+
+    CalendarResponseDto findScheduleById(Long id);
 }

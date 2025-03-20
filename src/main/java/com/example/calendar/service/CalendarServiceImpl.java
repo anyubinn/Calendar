@@ -32,4 +32,10 @@ public class CalendarServiceImpl implements CalendarService {
 
         return calendarRepository.findAllSchedules();
     }
+
+    @Override
+    public CalendarResponseDto findScheduleById(Long id) {
+
+        return calendarRepository.findScheduleById(id);
+    }
 }
