@@ -6,6 +6,7 @@ import com.example.calendar.entity.Calendar;
 import com.example.calendar.repository.CalendarRepository;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,5 +25,11 @@ public class CalendarServiceImpl implements CalendarService {
                 LocalDateTime.now()).toLocalDateTime(), Timestamp.valueOf(LocalDateTime.now()).toLocalDateTime());
 
         return calendarRepository.saveSchedule(calendar);
+    }
+
+    @Override
+    public List<CalendarResponseDto> findAllSchedules() {
+
+        return calendarRepository.findAllSchedules();
     }
 }

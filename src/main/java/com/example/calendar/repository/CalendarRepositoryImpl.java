@@ -2,12 +2,16 @@ package com.example.calendar.repository;
 
 import com.example.calendar.dto.CalendarResponseDto;
 import com.example.calendar.entity.Calendar;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
@@ -37,5 +41,27 @@ public class CalendarRepositoryImpl implements CalendarRepository {
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
 
         return new CalendarResponseDto(key.longValue(), calendar.getTodo(), calendar.getWriterName(), calendar.getRegDate(), calendar.getModDate());
+    }
+
+    @Override
+    public List<CalendarResponseDto> findAllSchedules() {
+
+        return jdbcTemplate.query("select * from calendar order by mod_date desc", calendarRowMapper());
+    }
+
+    private RowMapper<CalendarResponseDto> calendarRowMapper() {
+
+        return new RowMapper<CalendarResponseDto>() {
+            @Override
+            public CalendarResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return new CalendarResponseDto(
+                        rs.getLong("id"),
+                        rs.getString("todo"),
+                        rs.getString("writer_name"),
+                        rs.getTimestamp("reg_date").toLocalDateTime(),
+                        rs.getTimestamp("mod_date").toLocalDateTime()
+                );
+            }
+        };
     }
 }
