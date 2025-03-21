@@ -11,4 +11,6 @@ public interface CalendarService {
     List<CalendarResponseDto> findAllSchedules();
 
     CalendarResponseDto findScheduleById(Long id);
+
+    CalendarResponseDto updateSchedule(Long id, CalendarRequestDto dto);
 }

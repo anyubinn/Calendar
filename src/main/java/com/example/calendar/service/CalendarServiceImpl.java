@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CalendarServiceImpl implements CalendarService {
@@ -35,6 +36,16 @@ public class CalendarServiceImpl implements CalendarService {
 
     @Override
     public CalendarResponseDto findScheduleById(Long id) {
+
+        return calendarRepository.findScheduleById(id);
+    }
+
+    @Transactional
+    @Override
+    public CalendarResponseDto updateSchedule(Long id, CalendarRequestDto dto) {
+
+        calendarRepository.updateSchedule(id, dto.getTodo(), dto.getWriterName(), dto.getPassword(),
+                Timestamp.valueOf(LocalDateTime.now()).toLocalDateTime());
 
         return calendarRepository.findScheduleById(id);
     }
