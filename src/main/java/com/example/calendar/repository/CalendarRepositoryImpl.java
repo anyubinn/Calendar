@@ -62,6 +62,12 @@ public class CalendarRepositoryImpl implements CalendarRepository {
                 writerName, modDate, id, password);
     }
 
+    @Override
+    public int deleteSchedule(Long id, String password) {
+
+        return jdbcTemplate.update("delete from calendar where id = ? and password = ?", id, password);
+    }
+
     private RowMapper<CalendarResponseDto> calendarRowMapper() {
 
         return new RowMapper<CalendarResponseDto>() {

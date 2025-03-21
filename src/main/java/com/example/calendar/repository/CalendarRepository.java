@@ -14,4 +14,6 @@ public interface CalendarRepository {
     CalendarResponseDto findScheduleById(Long id);
 
     int updateSchedule(Long id, String todo, String writerName, String password, LocalDateTime modDate);
+
+    int deleteSchedule(Long id, String password);
 }
