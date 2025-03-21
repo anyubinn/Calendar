@@ -3,6 +3,7 @@ package com.example.calendar.controller;
 import com.example.calendar.dto.CalendarRequestDto;
 import com.example.calendar.dto.CalendarResponseDto;
 import com.example.calendar.dto.DeleteCalendarRequestDto;
+import com.example.calendar.dto.SearchCalendarRequestDto;
 import com.example.calendar.service.CalendarService;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -33,9 +34,9 @@ public class CalendarController {
     }
 
     @GetMapping
-    public List<CalendarResponseDto> findAllSchedules() {
+    public List<CalendarResponseDto> findAllSchedules(@RequestBody(required = false) SearchCalendarRequestDto dto) {
 
-        return calendarService.findAllSchedules();
+        return calendarService.findAllSchedules(dto);
     }
 
     @GetMapping("/{id}")

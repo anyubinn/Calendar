@@ -3,13 +3,14 @@ package com.example.calendar.service;
 import com.example.calendar.dto.CalendarRequestDto;
 import com.example.calendar.dto.CalendarResponseDto;
 import com.example.calendar.dto.DeleteCalendarRequestDto;
+import com.example.calendar.dto.SearchCalendarRequestDto;
 import java.util.List;
 
 public interface CalendarService {
 
     CalendarResponseDto createSchedule(CalendarRequestDto dto);
 
-    List<CalendarResponseDto> findAllSchedules();
+    List<CalendarResponseDto> findAllSchedules(SearchCalendarRequestDto dto);
 
     CalendarResponseDto findScheduleById(Long id);
 

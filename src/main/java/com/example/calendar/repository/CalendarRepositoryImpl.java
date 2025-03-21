@@ -2,8 +2,11 @@ package com.example.calendar.repository;
 
 import com.example.calendar.dto.CalendarResponseDto;
 import com.example.calendar.entity.Calendar;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -39,13 +42,23 @@ public class CalendarRepositoryImpl implements CalendarRepository {
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
 
-        return new CalendarResponseDto(key.longValue(), calendar.getTodo(), calendar.getWriterName(), calendar.getRegDate(), calendar.getModDate());
+        return new CalendarResponseDto(key.longValue(), calendar.getTodo(), calendar.getWriterName(),
+                calendar.getRegDate(), calendar.getModDate());
     }
 
     @Override
     public List<CalendarResponseDto> findAllSchedules() {
 
         return jdbcTemplate.query("select * from calendar order by mod_date desc", calendarRowMapper());
+    }
+
+    @Override
+    public List<CalendarResponseDto> findAllSchedules(LocalDate modDate, String writerName) {
+
+        String sql = "SELECT * FROM calendar WHERE (DATE(mod_date) = ? OR ? IS NULL) AND (writer_name = ? OR ? IS NULL) ORDER BY mod_date DESC";
+
+        return jdbcTemplate.query(sql,
+                calendarRowMapper(), modDate != null ? Date.valueOf(modDate) : null, modDate, writerName, writerName);
     }
 
     @Override

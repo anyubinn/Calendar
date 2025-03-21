@@ -3,6 +3,7 @@ package com.example.calendar.service;
 import com.example.calendar.dto.CalendarRequestDto;
 import com.example.calendar.dto.CalendarResponseDto;
 import com.example.calendar.dto.DeleteCalendarRequestDto;
+import com.example.calendar.dto.SearchCalendarRequestDto;
 import com.example.calendar.entity.Calendar;
 import com.example.calendar.repository.CalendarRepository;
 import java.sql.Timestamp;
@@ -30,9 +31,13 @@ public class CalendarServiceImpl implements CalendarService {
     }
 
     @Override
-    public List<CalendarResponseDto> findAllSchedules() {
+    public List<CalendarResponseDto> findAllSchedules(SearchCalendarRequestDto dto) {
 
-        return calendarRepository.findAllSchedules();
+        if (dto == null) {
+            return calendarRepository.findAllSchedules();
+        }
+
+        return calendarRepository.findAllSchedules(dto.getModDate(), dto.getWriterName());
     }
 
     @Override
