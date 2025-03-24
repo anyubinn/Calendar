@@ -2,6 +2,7 @@ package com.example.calendar.repository;
 
 import com.example.calendar.dto.CalendarResponseDto;
 import com.example.calendar.entity.Calendar;
+import com.example.calendar.entity.Writer;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,22 +29,19 @@ public class CalendarRepositoryImpl implements CalendarRepository {
     }
 
     @Override
-    public CalendarResponseDto saveSchedule(Calendar calendar) {
+    public CalendarResponseDto saveSchedule(Calendar calendar, Writer writer) {
 
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         jdbcInsert.withTableName("calendar").usingGeneratedKeyColumns("id");
 
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("todo", calendar.getTodo());
-        parameters.put("writer_name", calendar.getWriterName());
-        parameters.put("password", calendar.getPassword());
         parameters.put("reg_date", calendar.getRegDate());
         parameters.put("mod_date", calendar.getModDate());
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
 
-        return new CalendarResponseDto(key.longValue(), calendar.getTodo(), calendar.getWriterName(),
-                calendar.getRegDate(), calendar.getModDate());
+        return new CalendarResponseDto(key.longValue(), calendar.getTodo(), writer.getWriterName(), calendar.getRegDate(), calendar.getModDate());
     }
 
     @Override

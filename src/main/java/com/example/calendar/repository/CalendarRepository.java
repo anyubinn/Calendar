@@ -2,13 +2,14 @@ package com.example.calendar.repository;
 
 import com.example.calendar.dto.CalendarResponseDto;
 import com.example.calendar.entity.Calendar;
+import com.example.calendar.entity.Writer;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public interface CalendarRepository {
 
-    CalendarResponseDto saveSchedule(Calendar calendar);
+    CalendarResponseDto saveSchedule(Calendar calendar, Writer writer);
 
     List<CalendarResponseDto> findAllSchedules();
 

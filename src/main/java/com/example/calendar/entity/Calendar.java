@@ -13,10 +13,9 @@ public class Calendar {
     private LocalDateTime modDate;
     private Long writerId;
 
-    public Calendar(String todo, LocalDateTime regDate, LocalDateTime modDate, Long writerId) {
+    public Calendar(String todo, LocalDateTime regDate, LocalDateTime modDate) {
         this.todo = todo;
         this.regDate = regDate;
         this.modDate = modDate;
-        this.writerId = writerId;
     }
 }

@@ -5,6 +5,7 @@ import com.example.calendar.dto.CalendarResponseDto;
 import com.example.calendar.dto.DeleteCalendarRequestDto;
 import com.example.calendar.dto.SearchCalendarRequestDto;
 import com.example.calendar.entity.Calendar;
+import com.example.calendar.entity.Writer;
 import com.example.calendar.repository.CalendarRepository;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -24,10 +25,12 @@ public class CalendarServiceImpl implements CalendarService {
     @Override
     public CalendarResponseDto createSchedule(CalendarRequestDto dto) {
 
-        Calendar calendar = new Calendar(dto.getTodo(), dto.getWriterName(), dto.getPassword(), Timestamp.valueOf(
-                LocalDateTime.now()).toLocalDateTime(), Timestamp.valueOf(LocalDateTime.now()).toLocalDateTime());
+        Writer writer = null;
 
-        return calendarRepository.saveSchedule(calendar);
+        Calendar calendar = new Calendar(dto.getTodo(), Timestamp.valueOf(LocalDateTime.now()).toLocalDateTime(),
+                Timestamp.valueOf(LocalDateTime.now()).toLocalDateTime());
+
+        return calendarRepository.saveSchedule(calendar, writer);
     }
 
     @Override
