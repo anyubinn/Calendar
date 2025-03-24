@@ -9,16 +9,14 @@ public class Calendar {
 
     private Long id;
     private String todo;
-    private String writerName;
-    private String password;
     private LocalDateTime regDate;
     private LocalDateTime modDate;
+    private Long writerId;
 
-    public Calendar(String todo, String writerName, String password, LocalDateTime regDate, LocalDateTime modDate) {
+    public Calendar(String todo, LocalDateTime regDate, LocalDateTime modDate, Long writerId) {
         this.todo = todo;
-        this.writerName = writerName;
-        this.password = password;
         this.regDate = regDate;
         this.modDate = modDate;
+        this.writerId = writerId;
     }
 }
