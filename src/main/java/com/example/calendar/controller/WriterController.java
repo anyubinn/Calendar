@@ -1,7 +1,7 @@
 package com.example.calendar.controller;
 
 import com.example.calendar.dto.RegisterWriterRequestDto;
-import com.example.calendar.entity.Writer;
+import com.example.calendar.dto.RegisterWriterResponseDto;
 import com.example.calendar.service.WriterService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ public class WriterController {
     }
 
     @PostMapping
-    public ResponseEntity<Writer> registerWriter(@RequestBody RegisterWriterRequestDto dto) {
+    public ResponseEntity<RegisterWriterResponseDto> registerWriter(@RequestBody RegisterWriterRequestDto dto) {
 
         return new ResponseEntity<>(writerService.registerWriter(dto), HttpStatus.OK);
     }
