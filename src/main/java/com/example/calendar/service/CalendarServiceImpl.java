@@ -40,7 +40,7 @@ public class CalendarServiceImpl implements CalendarService {
             return calendarRepository.findAllSchedules();
         }
 
-        return calendarRepository.findAllSchedules(dto.getModDate(), dto.getWriterName());
+        return calendarRepository.findAllSchedules(dto.getModDate(), dto.getWriterName(), dto.getWriterId(), dto.getEmail());
     }
 
     @Override

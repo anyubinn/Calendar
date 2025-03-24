@@ -30,7 +30,8 @@ public class CalendarRepositoryImpl implements CalendarRepository {
     @Override
     public CalendarResponseDto saveSchedule(Calendar calendar, Writer writer) {
 
-        Long writerId = jdbcTemplate.queryForObject("select writer_id from writer where writer_name = ? and password = ?",
+        Long writerId = jdbcTemplate.queryForObject(
+                "select writer_id from writer where writer_name = ? and password = ?",
                 Long.class, writer.getWriterName(), writer.getPassword());
 
         if (writerId != null) {
@@ -45,7 +46,8 @@ public class CalendarRepositoryImpl implements CalendarRepository {
 
             Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
 
-            return new CalendarResponseDto(key.longValue(), calendar.getTodo(), writer.getWriterName(), calendar.getRegDate(), calendar.getModDate());
+            return new CalendarResponseDto(key.longValue(), calendar.getTodo(), writer.getWriterName(),
+                    calendar.getRegDate(), calendar.getModDate());
         }
 
         throw new IllegalArgumentException("등록된 작성자가 아닙니다.");
@@ -58,12 +60,14 @@ public class CalendarRepositoryImpl implements CalendarRepository {
     }
 
     @Override
-    public List<CalendarResponseDto> findAllSchedules(LocalDate modDate, String writerName) {
+    public List<CalendarResponseDto> findAllSchedules(LocalDate modDate, String writerName, Long writerId,
+                                                      String email) {
 
-        String sql = "SELECT * FROM calendar WHERE (DATE(mod_date) = ? OR ? IS NULL) AND (writer_name = ? OR ? IS NULL) ORDER BY mod_date DESC";
+        String sql = "select * from calendar c join writer w on c.writer_id = w.writer_id where (date(mod_date) = ? or ? is null) and (writer_name = ? or ? is null) and (w.writer_id = ? or ? is null) and (email = ? or ? is null) order by mod_date desc";
 
         return jdbcTemplate.query(sql,
-                calendarRowMapper(), modDate != null ? Date.valueOf(modDate) : null, modDate, writerName, writerName);
+                calendarRowMapper(), modDate != null ? Date.valueOf(modDate) : null, modDate, writerName, writerName,
+                writerId, writerId, email, email);
     }
 
     @Override

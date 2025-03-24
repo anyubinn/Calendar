@@ -8,4 +8,6 @@ public class SearchCalendarRequestDto {
 
     private LocalDate modDate;
     private String writerName;
+    private Long writerId;
+    private String email;
 }

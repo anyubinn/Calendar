@@ -13,7 +13,7 @@ public interface CalendarRepository {
 
     List<CalendarResponseDto> findAllSchedules();
 
-    List<CalendarResponseDto> findAllSchedules(LocalDate modDate, String writerName);
+    List<CalendarResponseDto> findAllSchedules(LocalDate modDate, String writerName, Long writerId, String email);
 
     CalendarResponseDto findScheduleById(Long id);
 
