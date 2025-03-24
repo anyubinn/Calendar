@@ -56,7 +56,9 @@ public class CalendarRepositoryImpl implements CalendarRepository {
     @Override
     public List<CalendarResponseDto> findAllSchedules() {
 
-        return jdbcTemplate.query("select * from calendar order by mod_date desc", calendarRowMapper());
+        return jdbcTemplate.query(
+                "select * from calendar c join writer w on c.writer_id = w.writer_id order by mod_date desc",
+                calendarRowMapper());
     }
 
     @Override
@@ -73,15 +75,22 @@ public class CalendarRepositoryImpl implements CalendarRepository {
     @Override
     public CalendarResponseDto findScheduleById(Long id) {
 
-        return jdbcTemplate.queryForObject("select * from calendar where id = ?", calendarRowMapper(), id);
+        return jdbcTemplate.queryForObject(
+                "select * from calendar c join writer w on c.writer_id = w.writer_id where id = ?", calendarRowMapper(),
+                id);
     }
 
     @Override
     public int updateSchedule(Long id, String todo, String writerName, String password, LocalDateTime modDate) {
 
-        return jdbcTemplate.update(
-                "update calendar set todo = ?, writer_name = ?, mod_date = ? where id = ? and password = ?", todo,
-                writerName, modDate, id, password);
+        Long writerId = jdbcTemplate.queryForObject("select writer_id from writer where writer_name = ? and password = ?", Long.class, writerName, password);
+
+        if (writerId != null) {
+            return jdbcTemplate.update(
+                    "update calendar set todo = ?, mod_date = ? where id = ?", todo, modDate, id);
+        }
+
+        throw new IllegalArgumentException("등록된 작성자가 아닙니다.");
     }
 
     @Override
