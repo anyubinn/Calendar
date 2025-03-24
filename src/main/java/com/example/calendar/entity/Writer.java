@@ -1,6 +1,7 @@
 package com.example.calendar.entity;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
 public class Writer {
@@ -10,10 +11,14 @@ public class Writer {
     private String password;
     private String email;
 
-
     public Writer(String writerName, String password, String email) {
         this.writerName = writerName;
         this.password = password;
         this.email = email;
+    }
+
+    public Writer(String writerName, String password) {
+        this.writerName = writerName;
+        this.password = password;
     }
 }

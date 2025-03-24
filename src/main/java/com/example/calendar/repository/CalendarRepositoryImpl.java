@@ -30,17 +30,25 @@ public class CalendarRepositoryImpl implements CalendarRepository {
     @Override
     public CalendarResponseDto saveSchedule(Calendar calendar, Writer writer) {
 
-        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        jdbcInsert.withTableName("calendar").usingGeneratedKeyColumns("id");
+        Long writerId = jdbcTemplate.queryForObject("select writer_id from writer where writer_name = ? and password = ?",
+                Long.class, writer.getWriterName(), writer.getPassword());
 
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("todo", calendar.getTodo());
-        parameters.put("reg_date", calendar.getRegDate());
-        parameters.put("mod_date", calendar.getModDate());
+        if (writerId != null) {
+            SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
+            jdbcInsert.withTableName("calendar").usingGeneratedKeyColumns("id");
 
-        Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
+            Map<String, Object> parameters = new HashMap<>();
+            parameters.put("todo", calendar.getTodo());
+            parameters.put("reg_date", calendar.getRegDate());
+            parameters.put("mod_date", calendar.getModDate());
+            parameters.put("writer_id", writerId);
 
-        return new CalendarResponseDto(key.longValue(), calendar.getTodo(), writer.getWriterName(), calendar.getRegDate(), calendar.getModDate());
+            Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
+
+            return new CalendarResponseDto(key.longValue(), calendar.getTodo(), writer.getWriterName(), calendar.getRegDate(), calendar.getModDate());
+        }
+
+        throw new IllegalArgumentException("등록된 작성자가 아닙니다.");
     }
 
     @Override

@@ -25,7 +25,7 @@ public class CalendarServiceImpl implements CalendarService {
     @Override
     public CalendarResponseDto createSchedule(CalendarRequestDto dto) {
 
-        Writer writer = null;
+        Writer writer = new Writer(dto.getWriterName(), dto.getPassword());
 
         Calendar calendar = new Calendar(dto.getTodo(), Timestamp.valueOf(LocalDateTime.now()).toLocalDateTime(),
                 Timestamp.valueOf(LocalDateTime.now()).toLocalDateTime());
