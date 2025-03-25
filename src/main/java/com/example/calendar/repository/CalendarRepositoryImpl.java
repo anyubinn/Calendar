@@ -102,7 +102,7 @@ public class CalendarRepositoryImpl implements CalendarRepository {
                 Long.class, email, password);
 
         if (writerId != null) {
-            return jdbcTemplate.update("delete from calendar  where id = ?", id);
+            return jdbcTemplate.update("delete from calendar where id = ?", id);
         }
 
         throw new IllegalArgumentException("등록된 작성자가 아닙니다.");
