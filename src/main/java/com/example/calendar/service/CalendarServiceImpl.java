@@ -62,6 +62,6 @@ public class CalendarServiceImpl implements CalendarService {
     @Override
     public void deleteSchedule(Long id, DeleteCalendarRequestDto dto) {
 
-        calendarRepository.deleteSchedule(id, dto.getPassword());
+        calendarRepository.deleteSchedule(id, dto.getEmail(), dto.getPassword());
     }
 }

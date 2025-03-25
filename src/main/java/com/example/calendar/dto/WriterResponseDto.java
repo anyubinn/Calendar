@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class RegisterWriterResponseDto {
+public class WriterResponseDto {
 
     private Long writerId;
     private String writerName;

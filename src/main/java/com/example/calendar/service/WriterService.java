@@ -1,9 +1,11 @@
 package com.example.calendar.service;
 
-import com.example.calendar.dto.RegisterWriterRequestDto;
-import com.example.calendar.dto.RegisterWriterResponseDto;
+import com.example.calendar.dto.WriterRequestDto;
+import com.example.calendar.dto.WriterResponseDto;
 
 public interface WriterService {
 
-    RegisterWriterResponseDto registerWriter(RegisterWriterRequestDto dto);
+    WriterResponseDto registerWriter(WriterRequestDto dto);
+
+    WriterResponseDto updateWriter(Long writerId, WriterRequestDto dto);
 }

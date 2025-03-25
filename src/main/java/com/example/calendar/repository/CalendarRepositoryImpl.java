@@ -57,7 +57,7 @@ public class CalendarRepositoryImpl implements CalendarRepository {
     public List<CalendarResponseDto> findAllSchedules() {
 
         return jdbcTemplate.query(
-                "select * from calendar c join writer w on c.writer_id = w.writer_id order by mod_date desc",
+                "select * from calendar c join writer w on c.writer_id = w.writer_id order by c.mod_date desc",
                 calendarRowMapper());
     }
 
@@ -65,7 +65,7 @@ public class CalendarRepositoryImpl implements CalendarRepository {
     public List<CalendarResponseDto> findAllSchedules(LocalDate modDate, String writerName, Long writerId,
                                                       String email) {
 
-        String sql = "select * from calendar c join writer w on c.writer_id = w.writer_id where (date(mod_date) = ? or ? is null) and (writer_name = ? or ? is null) and (w.writer_id = ? or ? is null) and (email = ? or ? is null) order by mod_date desc";
+        String sql = "select * from calendar c join writer w on c.writer_id = w.writer_id where (date(c.mod_date) = ? or ? is null) and (writer_name = ? or ? is null) and (w.writer_id = ? or ? is null) and (email = ? or ? is null) order by c.mod_date desc";
 
         return jdbcTemplate.query(sql,
                 calendarRowMapper(), modDate != null ? Date.valueOf(modDate) : null, modDate, writerName, writerName,
@@ -83,7 +83,9 @@ public class CalendarRepositoryImpl implements CalendarRepository {
     @Override
     public int updateSchedule(Long id, String todo, String writerName, String password, LocalDateTime modDate) {
 
-        Long writerId = jdbcTemplate.queryForObject("select writer_id from writer where writer_name = ? and password = ?", Long.class, writerName, password);
+        Long writerId = jdbcTemplate.queryForObject(
+                "select writer_id from writer where writer_name = ? and password = ?", Long.class, writerName,
+                password);
 
         if (writerId != null) {
             return jdbcTemplate.update(
@@ -94,9 +96,16 @@ public class CalendarRepositoryImpl implements CalendarRepository {
     }
 
     @Override
-    public int deleteSchedule(Long id, String password) {
+    public int deleteSchedule(Long id, String email, String password) {
 
-        return jdbcTemplate.update("delete from calendar where id = ? and password = ?", id, password);
+        Long writerId = jdbcTemplate.queryForObject("select writer_id from writer where email = ? and password = ?",
+                Long.class, email, password);
+
+        if (writerId != null) {
+            return jdbcTemplate.update("delete from calendar  where id = ?", id);
+        }
+
+        throw new IllegalArgumentException("등록된 작성자가 아닙니다.");
     }
 
     private RowMapper<CalendarResponseDto> calendarRowMapper() {

@@ -1,9 +1,14 @@
 package com.example.calendar.repository;
 
-import com.example.calendar.dto.RegisterWriterResponseDto;
+import com.example.calendar.dto.WriterResponseDto;
 import com.example.calendar.entity.Writer;
+import java.time.LocalDateTime;
 
 public interface WriterRepository {
 
-    RegisterWriterResponseDto registerWriter(Writer writer);
+    WriterResponseDto registerWriter(Writer writer);
+
+    WriterResponseDto findWriterById(Long writerId);
+
+    int updateWriter(Long writerId, String writerName, String password, String email, LocalDateTime modDate);
 }

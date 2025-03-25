@@ -19,5 +19,5 @@ public interface CalendarRepository {
 
     int updateSchedule(Long id, String todo, String writerName, String password, LocalDateTime modDate);
 
-    int deleteSchedule(Long id, String password);
+    int deleteSchedule(Long id, String email, String password);
 }

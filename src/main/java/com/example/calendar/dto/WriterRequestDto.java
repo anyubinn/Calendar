@@ -3,7 +3,7 @@ package com.example.calendar.dto;
 import lombok.Getter;
 
 @Getter
-public class RegisterWriterRequestDto {
+public class WriterRequestDto {
 
     private String writerName;
     private String password;
