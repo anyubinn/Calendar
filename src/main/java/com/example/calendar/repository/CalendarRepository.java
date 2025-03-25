@@ -9,15 +9,21 @@ import java.util.List;
 
 public interface CalendarRepository {
 
-    CalendarResponseDto saveSchedule(Calendar calendar, Writer writer);
+    CalendarResponseDto saveSchedule(Calendar calendar, Writer writer, Long writerId);
 
     List<CalendarResponseDto> findAllSchedules();
 
     List<CalendarResponseDto> findAllSchedules(LocalDate modDate, String writerName, Long writerId, String email);
 
-    CalendarResponseDto findScheduleById(Long id);
+    CalendarResponseDto findScheduleByIdOrElseThrow(Long id);
 
-    int updateSchedule(Long id, String todo, String writerName, String password, LocalDateTime modDate);
+    int updateSchedule(Long id, String todo, LocalDateTime modDate);
 
     int deleteSchedule(Long id, String email, String password);
+
+    Long findWriterIdByScheduleId(Long id);
+
+    Long findWriterIdByNameAndPassword(String writerName, String password);
+
+    Long findWriterIdByEmailAndPassword(String email, String password);
 }

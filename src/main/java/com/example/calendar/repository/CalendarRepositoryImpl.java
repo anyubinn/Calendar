@@ -12,11 +12,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.sql.DataSource;
+import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.server.ResponseStatusException;
 
 @Repository
 public class CalendarRepositoryImpl implements CalendarRepository {
@@ -28,29 +30,21 @@ public class CalendarRepositoryImpl implements CalendarRepository {
     }
 
     @Override
-    public CalendarResponseDto saveSchedule(Calendar calendar, Writer writer) {
+    public CalendarResponseDto saveSchedule(Calendar calendar, Writer writer, Long writerId) {
 
-        Long writerId = jdbcTemplate.queryForObject(
-                "select writer_id from writer where writer_name = ? and password = ?",
-                Long.class, writer.getWriterName(), writer.getPassword());
+        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
+        jdbcInsert.withTableName("calendar").usingGeneratedKeyColumns("id");
 
-        if (writerId != null) {
-            SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-            jdbcInsert.withTableName("calendar").usingGeneratedKeyColumns("id");
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("todo", calendar.getTodo());
+        parameters.put("reg_date", calendar.getRegDate());
+        parameters.put("mod_date", calendar.getModDate());
+        parameters.put("writer_id", writerId);
 
-            Map<String, Object> parameters = new HashMap<>();
-            parameters.put("todo", calendar.getTodo());
-            parameters.put("reg_date", calendar.getRegDate());
-            parameters.put("mod_date", calendar.getModDate());
-            parameters.put("writer_id", writerId);
+        Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
 
-            Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
-
-            return new CalendarResponseDto(key.longValue(), calendar.getTodo(), writer.getWriterName(),
-                    calendar.getRegDate(), calendar.getModDate());
-        }
-
-        throw new IllegalArgumentException("등록된 작성자가 아닙니다.");
+        return new CalendarResponseDto(key.longValue(), calendar.getTodo(), writer.getWriterName(),
+                calendar.getRegDate(), calendar.getModDate());
     }
 
     @Override
@@ -73,39 +67,52 @@ public class CalendarRepositoryImpl implements CalendarRepository {
     }
 
     @Override
-    public CalendarResponseDto findScheduleById(Long id) {
+    public CalendarResponseDto findScheduleByIdOrElseThrow(Long id) {
 
-        return jdbcTemplate.queryForObject(
+        List<CalendarResponseDto> result = jdbcTemplate.query(
                 "select * from calendar c join writer w on c.writer_id = w.writer_id where id = ?", calendarRowMapper(),
                 id);
+        return result.stream().findAny().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 작성글이 존재하지 않습니다."));
     }
 
     @Override
-    public int updateSchedule(Long id, String todo, String writerName, String password, LocalDateTime modDate) {
+    public int updateSchedule(Long id, String todo, LocalDateTime modDate) {
 
-        Long writerId = jdbcTemplate.queryForObject(
-                "select writer_id from writer where writer_name = ? and password = ?", Long.class, writerName,
-                password);
-
-        if (writerId != null) {
             return jdbcTemplate.update(
                     "update calendar set todo = ?, mod_date = ? where id = ?", todo, modDate, id);
-        }
-
-        throw new IllegalArgumentException("등록된 작성자가 아닙니다.");
     }
 
     @Override
     public int deleteSchedule(Long id, String email, String password) {
 
-        Long writerId = jdbcTemplate.queryForObject("select writer_id from writer where email = ? and password = ?",
-                Long.class, email, password);
+        return jdbcTemplate.update("delete from calendar where id = ?", id);
+    }
 
-        if (writerId != null) {
-            return jdbcTemplate.update("delete from calendar where id = ?", id);
-        }
+    @Override
+    public Long findWriterIdByScheduleId(Long id) {
 
-        throw new IllegalArgumentException("등록된 작성자가 아닙니다.");
+        List<Long> writerId = jdbcTemplate.query("select writer_id from calendar where id = ?",
+                (rs, rowNum) -> rs.getLong("writer_id"), id);
+
+        return writerId.isEmpty() ? null : writerId.get(0);
+    }
+
+    @Override
+    public Long findWriterIdByNameAndPassword(String writerName, String password) {
+
+        List<Long> writerId = jdbcTemplate.query("select writer_id from writer where writer_name = ? and password = ?",
+                (rs, rowNum) -> rs.getLong("writer_id"), writerName, password);
+
+        return writerId.isEmpty() ? null : writerId.get(0);
+    }
+
+    @Override
+    public Long findWriterIdByEmailAndPassword(String email, String password) {
+
+        List<Long> writerId = jdbcTemplate.query("select writer_id from writer where email = ? and password = ?",
+                (rs, rowNum) -> rs.getLong("writer_id"), email, password);
+
+        return writerId.isEmpty() ? null : writerId.get(0);
     }
 
     private RowMapper<CalendarResponseDto> calendarRowMapper() {
