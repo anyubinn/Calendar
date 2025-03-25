@@ -4,4 +4,4 @@
 <img width="1311" alt="Image" src="https://github.com/user-attachments/assets/ef6ca51c-66e8-4225-9794-3325174c5cdb" />
 
 ### 🚀 ERD
-![Image](https://github.com/user-attachments/assets/952cde39-52d3-4796-a371-96091b912a61)
+![Image](https://github.com/user-attachments/assets/0dff8219-4cd4-4eff-9fd2-abe7a27bcd3e)
