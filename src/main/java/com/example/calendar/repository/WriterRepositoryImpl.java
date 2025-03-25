@@ -28,8 +28,10 @@ public class WriterRepositoryImpl implements WriterRepository {
         parameters.put("writer_name", writer.getWriterName());
         parameters.put("password", writer.getPassword());
         parameters.put("email", writer.getEmail());
+        parameters.put("reg_date", writer.getRegDate());
+        parameters.put("mod_date", writer.getModDate());
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
-        return new RegisterWriterResponseDto(key.longValue(), writer.getWriterName(), writer.getEmail());
+        return new RegisterWriterResponseDto(key.longValue(), writer.getWriterName(), writer.getEmail(), writer.getRegDate(), writer.getModDate());
     }
 }

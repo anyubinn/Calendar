@@ -27,3 +27,7 @@ CREATE TABLE writer
 ALTER TABLE calendar ADD COLUMN writer_id BIGINT;
 
 ALTER TABLE calendar ADD CONSTRAINT fk_writer FOREIGN KEY (writer_id) REFERENCES writer(writer_id);
+
+ALTER TABLE writer ADD COLUMN reg_date TIMESTAMP;
+
+ALTER TABLE writer ADD COLUMN mod_date TIMESTAMP;
