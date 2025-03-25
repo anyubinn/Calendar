@@ -23,6 +23,6 @@ public class WriterController {
     @PostMapping
     public ResponseEntity<RegisterWriterResponseDto> registerWriter(@RequestBody RegisterWriterRequestDto dto) {
 
-        return new ResponseEntity<>(writerService.registerWriter(dto), HttpStatus.OK);
+        return new ResponseEntity<>(writerService.registerWriter(dto), HttpStatus.CREATED);
     }
 }
