@@ -53,6 +53,13 @@ public class WriterRepositoryImpl implements WriterRepository {
                 writerName, password, email, modDate, writerId);
     }
 
+    @Override
+    public int deleteWriter(Long writerId, String email, String password) {
+
+        return jdbcTemplate.update("delete from writer where writer_id = ? and email = ? and password = ?", writerId, email,
+                password);
+    }
+
     private RowMapper<WriterResponseDto> writerRowMapper() {
 
         return new RowMapper<WriterResponseDto>() {

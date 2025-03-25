@@ -11,4 +11,6 @@ public interface WriterRepository {
     WriterResponseDto findWriterById(Long writerId);
 
     int updateWriter(Long writerId, String writerName, String password, String email, LocalDateTime modDate);
+
+    int deleteWriter(Long writerId, String email, String password);
 }

@@ -1,10 +1,12 @@
 package com.example.calendar.controller;
 
+import com.example.calendar.dto.DeleteWriterRequestDto;
 import com.example.calendar.dto.WriterRequestDto;
 import com.example.calendar.dto.WriterResponseDto;
 import com.example.calendar.service.WriterService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -33,5 +35,13 @@ public class WriterController {
                                                           @RequestBody WriterRequestDto dto) {
 
         return new ResponseEntity<>(writerService.updateWriter(writerId, dto), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{writerId}")
+    public ResponseEntity<Void> deleteWriter(@PathVariable Long writerId, @RequestBody DeleteWriterRequestDto dto) {
+
+        writerService.deleteWriter(writerId, dto);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.calendar.service;
 
+import com.example.calendar.dto.DeleteWriterRequestDto;
 import com.example.calendar.dto.WriterRequestDto;
 import com.example.calendar.dto.WriterResponseDto;
 import com.example.calendar.entity.Writer;
@@ -35,5 +36,11 @@ public class WriterServiceImpl implements WriterService {
                 Timestamp.valueOf(LocalDateTime.now()).toLocalDateTime());
 
         return writerRepository.findWriterById(writerId);
+    }
+
+    @Override
+    public void deleteWriter(Long writerId, DeleteWriterRequestDto dto) {
+
+        writerRepository.deleteWriter(writerId, dto.getEmail(), dto.getPassword());
     }
 }
