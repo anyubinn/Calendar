@@ -2,8 +2,10 @@ package com.example.calendar.entity;
 
 import java.time.LocalDateTime;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
+/**
+ * 작성자에 대한 정보를 담고 있는 클래스
+ */
 @Getter
 public class Writer {
 
